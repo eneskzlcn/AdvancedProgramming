@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width">
     <link rel="icon" href="https://blm-fsmvu.github.io/305/images/icon192.png">
-    <title>Cm-Inches Converter </title>
+    <title>Counter </title>
 
   <style> /* CSS comment */
     body { max-width: 440px; }
@@ -22,13 +22,10 @@
 <body>   <!-- HTML comment: Modify all items marked xxx -->
 
 <h2 id=title>This text is not shown. Why?</h2>
-Value
+Start Number
 <input type=number id=inp value=0 onChange="out.innerText=value">
-
-<input type=button value=Cm onClick="setCmConvert()">
-<input type=button value=Inch onClick="setInchesConvert()">
-<h2></h2>
-<input type=button value=Convert onClick="convert()">
+&emsp;
+<input type=button value=Increase onClick="increment()">
 <p id=out>This text is not shown. Why?</p>
 
 <hr />
@@ -42,34 +39,17 @@ Value
 
 <script>
 "use strict";
-var isConvertOnCm = false
-var isConvertOnInches = false;
 // JavaScript comment
-function convert() {
-    let inputValue = Number(out.innerText);
-    if(isConvertOnCm){
-      out.innerText = (inputValue*2.54).toFixed(1);
-    }
-    else
-    {
-      out.innerText = (inputValue/2.54).toFixed(1);
-    }
-}
-function setCmConvert()
-{
-  isConvertOnCm = true;
-  isConvertOnInches = false;
-}
-function setInchesConvert()
-{
-  isConvertOnCm = false;
-  isConvertOnInches = true;
+function increment() {
+    let c = Number(out.innerText)+1
+    console.log("counter = "+c);
+    out.innerText = c;
 }
     //global variable id is the HTML element with id 
     //const title = document.getElementById("title");
     title.innerText = document.title;
-    sample.innerText = convert.toString();
-    out.innerText = 0; convert();
+    sample.innerText = increment.toString();
+    out.innerText = 0; increment();
 </script>
 
 </body>
