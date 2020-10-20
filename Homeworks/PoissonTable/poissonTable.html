@@ -8,7 +8,7 @@
     <style>
       table, th, td 
       {
-        border: 3px solid darkred;
+        border: 5px solid darkred;
         border-collapse: collapse;
       }
       th, td 
@@ -16,17 +16,79 @@
         padding: 10px;
         text-align: center;
       }
+      div.b {
+        position: absolute;
+        right: 50px;
+        top: 150px;
+        width: 520px;
+        height: 445px;
+        border: 3px solid black;
+        background-color:  rgb(255, 174, 0);
+      } 
+      div.c {
+        position: absolute;
+        left: 750px;
+        top: 300px;
+        width: 100px;
+        height: 120px;
+      }
+      div.d {
+        position: absolute;
+        left: 760px;
+        top: 450px;
+        width: 150px;
+        height: 120px;
+        border: 3 px solid black;
+      } 
+      div.a {
+        position: absolute;
+        left: 0px;
+        width: 680px;
+        height: 620px;
+        border: 3px solid black;
+        background-color: #df934c;
+        font-size: 15px;
+        text-align: left;
+        ;
+      }
+      .button {
+        background-color: #1c7894;
+        border: 3px solid black;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+      }
       </style>
 </head>
 <body> 
-  <center>
-  <h1 id= title style="color:darkred;">Poisson Table</h2>
-  <table id = "poissonTable" style="width:50%">
-    <tbody>
-    </tbody>
+  <h1 id= title style="color:darkred;">Poisson Table</h1>
+  <h1></h1>
+  <h2></h2>
+    <div class = "a">
+      <h>
+        <b>Sample Code</b>
+        <pre id=sample></pre>
+      </h>
+    </div>
+    <div class = "c">
+      <button class="button" onclick="createTable(3,8)">Create Table</button>
+    </div>
+    <div class = "b">
+      <table id = "poissonTable">
+        <tbody>
+        </tbody>
+      </table>
+    </div>
+    <div class = "d">
+      <b><a href="https://eneskzlcn.github.io/MakingWebPage/Homeworks/PoissonTable/poissonTable.png" 
+        target="NewTab">Original Image</a></b>
+    </div>
   
-  </table>
-  </center>
   <script>
     function createTable(n,m)
     {
@@ -41,22 +103,27 @@
         cell = "<th>"+"x = "+j+"</th>";   //adding one haeder cell for data rows.
         for(let k = 0.5; k<=n;k+=0.5)
         {
-          let calculatePoisson = calcPoisson(k,j); // k is for the columns so -->lambda , j is fir rows so -->x
+      // k is for the columns so -->lambda , j is fir rows so -->x
+          let calculatePoisson = calcPoisson(k,j); 
           cell+= "<td>"+calculatePoisson.toFixed(4)+"</td>";
         }
         text += "<tr>"+cell+"</tr>";
       }
       poissonTable.innerHTML = text;
     }
-    function calcPoisson(lambda,x=0) // this recursive function calculates the poisson value in any x value in a column(const lambda value)
+
+    function calcPoisson(lambda,x=0) 
     {
+      /* this recursive function calculates 
+      the poisson value in any x value in a column*/
       if(x==0)
       {
         return Math.exp(-lambda);
       }
       return (lambda /x)*calcPoisson(lambda,x-1);
     }
-    createTable(3,8);
+    //createTable(3,8);
+    sample.innerText = createTable + "\n\n\n"+ calcPoisson;
   </script>
 </body>
 </html>
