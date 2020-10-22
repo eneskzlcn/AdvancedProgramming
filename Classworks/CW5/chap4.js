@@ -140,3 +140,4 @@ const JOURNAL = [
 ]
 
 journalEvents()  //determine the set of events
+

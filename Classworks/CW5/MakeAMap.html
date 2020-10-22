@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="https://blm-fsmvu.github.io/305/images/icon192.png">
+    <title>Make A Map </title>
+
+  <style> /* CSS comment */
+    body { max-width: 700px; }
+    #sample {
+        font-size: 12px;
+        background: rgb(199, 124, 90);
+        color: rgb(8, 8, 8);
+        text-align: left;
+    }
+  </style>
+</head>
+
+<body>
+    <h1>Make A Map</h1>
+    <hr />
+    <b>Sample code</b>
+    <pre id="sample">
+    </pre>
+    <hr />
+    <p>Image Map Using: <a href="" 
+        target="NewTab">Map Using Image</a>
+     </p>
+<script>
+"use strict";
+function makeMap()
+{
+  let m = new Map();
+  for (let x of JOURNAL){
+    if(x.events.indexOf("weekend") != -1)//if there is no "weekend" then will return -1
+    {
+      for(let y of x.events){
+        if(!y.includes("weekend"))
+        {
+          if(m.has(y)){
+            m.set(y,m.get(y)+1);//increase 1 if there is already a key named with this event
+          }
+          else{
+            m.set(y,1);//if there is not then create new kay named this event with value 1
+          }
+        }
+      }
+    }
+  }
+}
+sample.innerText = makeMap;
+</script>
+</body>
+
+</html>

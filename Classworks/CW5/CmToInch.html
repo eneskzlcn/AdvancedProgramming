@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="https://blm-fsmvu.github.io/305/images/icon192.png">
+    <title>Cm-Inches Converter </title>
+
+  <style> /* CSS comment */
+    body { max-width: 440px; }
+    #inp { width: 50px }
+    #out {
+        font-size: 18px;
+        background: rgb(121, 170, 182);
+        color: rgb(187, 17, 17);
+        text-align: center;
+        padding: 10px;
+        
+    }
+  </style>
+</head>
+
+<body>   <!-- HTML comment: Modify all items marked xxx -->
+
+<h2 id=title>CM-INCH CONVERTER</h2>
+Value
+
+<form>
+<input type="number" value = 0 id="numberInp"> 
+<p></p>
+Convert To:
+<p></p>
+Cm 
+<input type="radio" id="cmInp" name="convertType">
+Inch
+<input type="radio"id="inchesInp" name ="convertType" >
+<h2></h2>
+</form>
+<button type= button value=Convert onClick="convert()">Convert</button>
+<p id=out></p>
+
+<hr />
+<b>Sample code</b>
+<pre id="sample">
+</pre>
+<hr />
+
+<script>
+"use strict";
+class ConvertionUtil {
+  
+  static convertToCm(inches)
+  {
+    return inches*2.54;
+  }
+  static convertToInches(cm)
+  {
+    return cm/2.54;
+  }
+}
+function convert() 
+{
+    let inputValue = Number(numberInp.value);
+    let result = 0;
+    if(document.getElementById('cmInp').checked == true)
+    {
+      result = ConvertionUtil.convertToCm(inputValue);
+    }
+    if(document.getElementById('inchesInp').checked == true)
+    {
+      result = ConvertionUtil.convertToInches(inputValue);
+    }
+    out.innerText = result.toFixed(3);
+  }
+    title.innerText = document.title;
+    sample.innerText = convert+"\n\n\n"+ConvertionUtil;
+    out.innerText = 0;
+    convert();
+</script>
+
+</body>
+</html>

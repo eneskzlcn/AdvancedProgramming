@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Chapter 5 Works </title>
+
+    <style>
+        body { max-width: 600px; }
+    </style>
+</head>
+
+<body>
+<p><b id=docName></b> &nbsp;
+<a href="https://maeyler.github.io/JS/sss/">Read me</a> &nbsp;
+<a href="https://maeyler.github.io/JS/sss/Turkish">Turkish</a> &nbsp;
+<a href="Objects">Objects</a>
+</p>
+<div id=sss></div>
+<p><input type=file multiple onChange='fileSelect(this)' /></p>
+<pre id=disp1></pre> <img id=disp2 />
+<p>
+  <a href = "">Inches-Centimeter Converter With Class</a>
+</p>
+<p>
+  <a href = "">Making A Map That Keeps Weekend Events</a>
+</p>
+<p> <button type = "button" onClick = "showWeekendOrWork()"> Show All Entries Has Work Or Weekend </button>
+<p id="allResult"></p>
+
+<link  href="https://maeyler.github.io/JS/sss/inspector.css" rel="stylesheet">
+<script src="https://maeyler.github.io/JS/sss/inspector.js"></script>
+<script src="chap4.js">
+  
+</script>
+<script>
+"use strict";
+class Chap4 extends Menu {
+  constructor() {
+    super();
+    this.JOURNAL = JOURNAL;
+    this.EVENTS = EVENTS;
+  }
+  correlation(evt) { 
+    return phi(window.tableFor(evt)) 
+  }
+  analyze(val) {
+    return window.analyze(val)
+  }
+  tableFor(evt) {
+    return window.tableFor(evt)
+  }
+}
+function showWeekendOrWork()
+{
+    var entryNumber = 0;
+    var allEntryNumber = JOURNAL.length; 
+    /*one of them is work and of of them is weekend 
+    then size minus 2 will give us all events without work and weekend*/
+    allResult.innerText+= "Checked "+allEntryNumber+" entries : \n\n";
+    for (let x of JOURNAL){
+      for (let y of x.events){
+         if(y.includes("work"))
+          { 
+            allResult.innerText += "Entry "+entryNumber+": This entry has work event\n";
+            entryNumber++;
+          }
+          else if(y.includes("weekend"))
+          {
+            allResult.innerText+= "Entry "+entryNumber+": This entry has weekend event\n";
+            entryNumber++;
+          }
+      }
+    }
+}
+function makeMap()
+{
+  let m = new Map();
+  for (let x of JOURNAL){
+    if(x.events.indexOf("weekend") != -1)//if there is no "weekend" then will return -1
+    {
+      for(let y of x.events){
+        if(!y.includes("weekend"))
+        {
+          if(m.has(y)){
+            m.set(y,m.get(y)+1);//increase 1 if there is already a key named with this event
+          }
+          else{
+            m.set(y,1);//if there is not then create new kay named this event with value 1
+          }
+        }
+      }
+    }
+  }
+}
+var a, b, c, d, s;  //global variables
+function init() {
+    let len = 123, name = "Circle", pi = Math.PI
+    a = [0, 11, "22", "abc"]
+    c = {len, name, pi}
+    d = new Date()
+    s = "Small is beautiful"
+    MENU = {a,c,d,s,window} //global
+    //make MENU a Menu instance
+    Object.setPrototypeOf(MENU, Menu.prototype)
+    display(MENU); 
+    display(new Chap4());
+    display(MENU); 
+}
+    docName.innerText = "(Chapter 5 Works (Used given Inspector)";
+    try {
+        inspect(sss, init); //makes the table
+        inp.value = "new Date()";
+    } catch(e) {
+        reportError(e);
+    }
+</script>
+</body>
+</html>
