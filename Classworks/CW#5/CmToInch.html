@@ -74,20 +74,24 @@ class Length {
 function convert() {
     let inputValue = Number(out.innerText);
     let length = new Length(inputValue);
+    var result = 0;
     if(isConvertOnCm)
     {
-      length.cm();
+      result = length.fromCm(inputValue);
     }
     else if(isConvertOnInches)
     {
+      let length = new Length(inputValue);
+      result = length.cm;
     }
+    return result;
 }
 
     //global variable id is the HTML element with id 
     //const title = document.getElementById("title");
     title.innerText = document.title;
     sample.innerText = convert.toString();
-    out.innerText = 0; convert();
+    out.innerText = result; convert();
 </script>
 
 </body>
