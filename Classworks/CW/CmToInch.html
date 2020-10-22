@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="https://blm-fsmvu.github.io/305/images/icon192.png">
+    <title>Cm-Inches Converter </title>
+
+  <style> /* CSS comment */
+    body { max-width: 440px; }
+    #inp { width: 50px }
+    #out {
+        font-size: 18px;
+        background: blue;
+        color: white;
+        text-align: center;
+        padding: 10px;
+    }
+  </style>
+</head>
+
+<body>   <!-- HTML comment: Modify all items marked xxx -->
+
+<h2 id=title>This text is not shown. Why?</h2>
+Value
+<input type=number id=inp value=0 onChange="out.innerText=value">
+
+<input type=button value=Cm onClick="setCmConvert()">
+<input type=button value=Inch onClick="setInchesConvert()">
+<h2></h2>
+<input type=button value=Convert onClick="convert()">
+<p id=out>This text is not shown. Why?</p>
+
+<hr />
+<b>Sample code</b>
+<pre id=sample>This text is not shown. Why?</pre>
+
+<hr />
+<p>Ref: <a href="https://www.w3schools.com/js/" 
+   target="NewTab">JS Tutorial</a>
+</p>
+
+<script>
+"use strict";
+var isConvertOnCm = false
+var isConvertOnInches = false;
+// JavaScript comment
+class Length
+{
+  constructor(length_cm)
+  {
+    this.length = length
+  }
+}
+class Length {
+  constructor(inch=0) {
+    this.inch = inch;
+  }
+  get cm() {
+    return this.inch * 2.54;
+  }
+  set cm(value=0) {
+    this.cm = value *2.54;
+  }
+  toString() {
+    return this.inch+"inch"
+  }
+  static fromCm(value) {
+    let t = new Length();
+    t.cm = value;
+    return t;
+  }
+}
+function convert() {
+    let inputValue = Number(out.innerText);
+    let length = new Length(inputValue);
+    var result = 0;
+    if(isConvertOnCm)
+    {
+      result = length.fromCm(inputValue);
+    }
+    else if(isConvertOnInches)
+    {
+      let length = new Length(inputValue);
+      result = length.cm;
+    }
+    return result;
+}
+
+    //global variable id is the HTML element with id 
+    //const title = document.getElementById("title");
+    title.innerText = document.title;
+    sample.innerText = convert.toString();
+    out.innerText = result; convert();
+</script>
+
+</body>
+</html>
