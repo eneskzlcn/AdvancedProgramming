@@ -7,15 +7,30 @@
     <title>Cm-Inches Converter </title>
 
   <style> /* CSS comment */
-    body { max-width: 440px; }
+    body { max-width: 540px; }
     #inp { width: 50px }
     #out {
         font-size: 18px;
         background: rgb(121, 170, 182);
-        color: rgb(187, 17, 17);
+        color: rgb(51, 20, 20);
         text-align: center;
         padding: 10px;
+        height: 40px;
         
+    }
+    #sample{
+      font-size: 12px;
+      background-color: rgb(230, 167, 84);
+      color:rgb(0, 0, 0)
+
+    }
+    #sample1{
+      background-color: rgb(103, 197, 108);
+      color:rgb(0, 0, 0)
+    }
+    #sample2{
+      background-color: rgb(134, 123, 123);
+      color:rgb(0, 0, 0)
     }
   </style>
 </head>
@@ -33,22 +48,34 @@ Convert To:
 Cm 
 <input type="radio" id="cmInp" name="convertType">
 Inch
-<input type="radio"id="inchesInp" name ="convertType" >
+<input type="radio"id="inchesInp" name ="convertType" >(The value thought as cm when you select convertion to inches and the same is true in opposite case)
 <h2></h2>
 </form>
 <button type= button value=Convert onClick="convert()">Convert</button>
 <p id=out></p>
 
 <hr />
+<hr />
+<hr />
 <b>Sample code</b>
-<pre id="sample">
-</pre>
+<pre id="sample"></pre>
+<hr />
+<hr />
+<hr />
+<pre id="sample1"></pre>
+<hr />
+<hr />
+<hr />
+<pre id="sample2"></pre>
+<hr />
+<hr />
 <hr />
 
 <script>
 "use strict";
-class ConvertionUtil {
-  
+class ConvertionUtil 
+{
+  //Firstly added as an alternative utility class
   static convertToCm(inches)
   {
     return inches*2.54;
@@ -58,23 +85,52 @@ class ConvertionUtil {
     return cm/2.54;
   }
 }
+class Length
+{
+  constructor(inches=0)
+  {
+    this.inches = inches;
+  }
+  get cm()
+  {
+    return (this.inches *2.54);
+  }
+  set cm(value)
+  {
+    this.inches = (!isNaN(value))?(value/2.54):0;
+  }
+  toString()
+  {
+    return this.inches+" inches";
+  }
+  static fromCm(value)
+  {
+    let t = new Length();
+    t.cm = (!isNaN(value))?value:0;
+    return t;
+  }
+}
 function convert() 
 {
     let inputValue = Number(numberInp.value);
-    let result = 0;
+    let result = "";
     if(document.getElementById('cmInp').checked == true)
     {
-      result = ConvertionUtil.convertToCm(inputValue);
+      let length = new Length(inputValue);
+      result = inputValue + " in = "+(length.cm).toFixed(2) + " cm";
     }
     if(document.getElementById('inchesInp').checked == true)
     {
-      result = ConvertionUtil.convertToInches(inputValue);
+      let length = Length.fromCm(numberInp.value);
+      result = inputValue + " cm = "+ (length.inches).toFixed(2) + " in";
     }
-    out.innerText = result.toFixed(3);
+    out.innerText = result;
   }
     title.innerText = document.title;
-    sample.innerText = convert+"\n\n\n"+ConvertionUtil;
-    out.innerText = 0;
+    sample.innerText = convert+"\n\n\n";
+    sample1.innerText = Length+"\n\n\n";
+    sample2.innerText = ConvertionUtil;
+    out.innerText = "Result: "+0;
     convert();
 </script>
 
