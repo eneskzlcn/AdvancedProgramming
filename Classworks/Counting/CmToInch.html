@@ -41,12 +41,13 @@ Inch
 <script>
 "use strict";
 // JavaScript comment
-function convertFromCm() {//2.54 ratio
+function convertFromCm() {
+  //used onkeyup events to provide user feel the result changes every single key press
     let inputValue = Number(cmInp.value);
     inchInp.value = (inputValue*2.54).toFixed(1);
 }
-function convertFromInches()
-{
+function convertFromInches(){
+//used onkeyup events to provide user feel the result changes every single key press
     let inputValue = Number(inchInp.value);
     cmInp.value = (inputValue/2.54).toFixed(1);
 }
