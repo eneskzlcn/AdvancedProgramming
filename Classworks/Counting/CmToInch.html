@@ -22,14 +22,12 @@
 <body>   <!-- HTML comment: Modify all items marked xxx -->
 
 <h2 id=title>This text is not shown. Why?</h2>
-Value
-<input type=number id=inp value=0 onChange="out.innerText=value">
+Cm
+<input type=number id=cmInp value=0 onkeyup="convertFromCm()">
+Inch
+<input type = number id = inchInp value = 0 onkeyup="convertFromInches()">
 
-<input type=button value=Cm onClick="setCmConvert()">
-<input type=button value=Inch onClick="setInchesConvert()">
 <h2></h2>
-<input type=button value=Convert onClick="convert()">
-<p id=out>This text is not shown. Why?</p>
 
 <hr />
 <b>Sample code</b>
@@ -42,34 +40,22 @@ Value
 
 <script>
 "use strict";
-var isConvertOnCm = false
-var isConvertOnInches = false;
 // JavaScript comment
-function convert() {
-    let inputValue = Number(out.innerText);
-    if(isConvertOnCm){
-      out.innerText = (inputValue*2.54).toFixed(1);
-    }
-    else
-    {
-      out.innerText = (inputValue/2.54).toFixed(1);
-    }
+function convertFromCm() {//2.54 ratio
+    let inputValue = Number(cmInp.value);
+    inchInp.value = (inputValue*2.54).toFixed(1);
 }
-function setCmConvert()
+function convertFromInches()
 {
-  isConvertOnCm = true;
-  isConvertOnInches = false;
+    let inputValue = Number(inchInp.value);
+    cmInp.value = (inputValue/2.54).toFixed(1);
 }
-function setInchesConvert()
-{
-  isConvertOnCm = false;
-  isConvertOnInches = true;
-}
+
     //global variable id is the HTML element with id 
-    //const title = document.getElementById("title");
+    const title = document.getElementById("title");
     title.innerText = document.title;
-    sample.innerText = convert.toString();
-    out.innerText = 0; convert();
+    sample.innerText = convertFromCm +"\n"+ convertFromInches;
+    
 </script>
 
 </body>
