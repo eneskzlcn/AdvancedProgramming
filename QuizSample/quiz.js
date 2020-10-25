@@ -8,7 +8,7 @@ class Author
     }
     addBook(book)
     {
-        book.name = this.name;
+        book.author = this.name;
         this.books.push(book);
     }
     toString()
@@ -17,22 +17,21 @@ class Author
     }
     filterByPageNumber(pageNumber)
     {
-        let set = [];
+        let a = new Set(); 
         for(let i=0;i <this.books.length;i++)
         {
             if(this.books[i].page > pageNumber)
             {
-                set.push(this.books[i]);
+                a.add(this.books[i]);
             }
         }
-        return set;
+        return a;
     }
     getNumberOfBooks()
     {
         return this.books.length;
     }
 }
-
 class Book
 {
     constructor(name,page)
@@ -41,36 +40,20 @@ class Book
         this.page = page;
     }
 }
-class Map
-{
-    constructor(authors=[])
-    {
-        this.authors = authors;
-    }
-    get(authorName)
-    {
-        let bookNumber = 0;
-        for(let i =0; i<this.authors.length;i++)
-        {
-            if(this.authors[i].name == authorName)
-            {
-                bookNumber = this.authors[i].getNumberOfBooks();
-                break;
-            }
-        }
-        return bookNumber;
-    }
-    addAuthor(author)
-    {
-        this.authors.push(author);
-    }
-}
-
 let author1 = new Author("Rumi",1273);
 author1.addBook(new Book("Mesnevi",180));
 author1.addBook(new Book("Divan",350));
 let setOfBooksLongerThanOneHundredPage = author1.filterByPageNumber(100);
-//console.log(setOfBooksLongerThanOneHundredPage);
+console.log(setOfBooksLongerThanOneHundredPage);
+//creating a map that allows -> m.get["Rumi"]= 2(numberOfBooks)
+
+let allAuthors = [];
+allAuthors.push(author1);
 let m = new Map();
-m.addAuthor(author1);
-console.log(m.get("Rumi"))
+for (let author of allAuthors)
+{
+    m.set(author.name,author.getNumberOfBooks());
+}
+m.get("Rumi");
+//m.addAuthor(author1);
+//console.log(m.get("Rumi"))
