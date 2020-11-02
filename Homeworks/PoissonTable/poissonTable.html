@@ -11,28 +11,26 @@
   <h1 id= title style="color:darkred;">Poisson Table</h1>
   <h1></h1>
   <h2></h2>
-    <div class = "a">
+      <p>
+        <table id = "poissonTable">
+          <tbody>
+          </tbody>
+        </table>
+      </p>
       <h>
         <b>Sample Code</b>
-        <pre id=sample></pre>
+        <pre id=sample ></pre>
       </h>
-    </div>
-    <div class = "c">
-      <button class="button" onclick="createTable(3,8)">Create Table</button>
-    </div>
-    <div class = "b">
-      <table id = "poissonTable">
-        <tbody>
-        </tbody>
-      </table>
-    </div>
-    <div class = "d">
-      <b><a href="https://eneskzlcn.github.io/AdvancedPrograming/Homeworks/PoissonTable/poissonTable.png" 
-        target="NewTab">Original Image</a></b>
-    </div>
+      <b>
+        <a href="https://eneskzlcn.github.io/AdvancedPrograming/Homeworks/PoissonTable/poissonTable.png" 
+        target="NewTab">Original Image</a>
+      </b>
+      <h1></h1>
+    
   
   <script>
     sample.innerText = createTable + "\n\n\n"+ calcPoisson;
+    createTable(3,8);
   </script>
 </body>
 </html>
