@@ -53,12 +53,14 @@ function check()
 function init() 
 {
   plat.innerText = navigator.platform;
-  loc.innerText = navigator.geolocation.getCurrentPosition(p=> p.coords);
+  loc.innerText = 
+    navigator.geolocation.getCurrentPosition(p=> p.coords);
   navigator.getBattery().then(b => 
         level.innerText = "%"+(b.level*100).toFixed(0)
     ).catch(e => resp.innerText = e)
   navigator.geolocation.getCurrentPosition(
-    p => loc.innerText = p.coords.latitude.toFixed(4) + "," + p.coords.longitude.toFixed(4))
+    p => loc.innerText = p.coords.latitude.toFixed(4) 
+    + "," + p.coords.longitude.toFixed(4))
 
   check();
 }
