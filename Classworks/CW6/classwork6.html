@@ -39,8 +39,16 @@
 // JavaScript comment
 function check() 
 {
- fetch(url.value).then(b =>
- resp.innerText = b.ok);
+ fetch(url.value).then(b =>{
+   if(b.ok)
+   {
+    resp.innerText = "OK";
+   }
+   else
+   {
+    resp.innerText = "NO";
+   }
+ });
 }
 function init() 
 {
