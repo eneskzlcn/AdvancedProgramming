@@ -122,8 +122,11 @@ function showCourse(id) {
     for (let std of stdMap.values()) 
         if (std.list.includes(id)) 
             a.push(std.id+" "+std.name);
-    if (a.length > 0)
+
+    let timeAndDate = crsMap.get(id).time+" "+ crsMap.get(id).date;
+    if (a.length > 0){
         report(id+": ", a.length+" students", a);
+        report(timeAndDate);}
     else report("No students in "+id);
     return a
 }
@@ -143,7 +146,7 @@ function findBest() { //the best gpa in stdMap
             greatestGpa = s.gpa
         }
     }
-    report(greatestGpa);
+    report("Best GPA: " +greatestGpa);
 }
     
 
