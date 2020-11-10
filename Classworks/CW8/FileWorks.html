@@ -33,7 +33,7 @@ function checkFiles(b) {
     let a = [...local.files]
     for(let file of a)
     {
-        out.innerText += file.name+","
+        out.innerText += file.name+" "
     }
     let c = 0
     let k = remote.value.split("/");
@@ -47,7 +47,7 @@ function checkFiles(b) {
         if((b.type == f.type) && (b.size == f.size))
         {
             c++;
-            resultText1+= f.name + ", "
+            resultText1+= f.name + " "
         }
     })
     if(c>0)
