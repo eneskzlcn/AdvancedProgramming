@@ -198,8 +198,9 @@ function studentsTakingCourse() //2
 function testSpeed()
 {// question -2 
     let keys = [...stdMap.keys()]  //Iterable
-    let rndId =  Math.trunc(Math.random() *
-            (1000000000));
+    //let rndId =  Math.trunc(Math.random() *
+    //        (1000000000)); //these works but hard to show it works well
+    let rndId = 116700800; //so ı made it manually.
     let time = Date.now();
     let count = 0;
     for(let i =0;i <10000;i++)
@@ -209,10 +210,10 @@ function testSpeed()
             count++;
         }
     }
-    let c= "Searched with keys.includes from " 
-        +rndId+" to "+(rndId+10000)
+    let c= "<br>Searched with keys.includes from " 
+        +rndId+" to<br>"+(rndId+10000)
             +" and found "+count+" students in "
-                +(Date.now()-time)+"ms";
+                +(Date.now()-time)+"ms<br>";
     report(c);
     time = Date.now();
     count = 0;
@@ -224,7 +225,7 @@ function testSpeed()
         }
     }
     c= "Searched with stdMap.has from " 
-        +rndId+" to "+(rndId+10000)
+        +rndId+" to<br>"+(rndId+10000)
             +" and found "+count+" students in "
                 +(Date.now()-time)+"ms";
     report(c);
