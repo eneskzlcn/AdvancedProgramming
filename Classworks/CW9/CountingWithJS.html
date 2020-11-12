@@ -30,6 +30,8 @@ function makePage() {
   out.style.color = 'blue';
   let bold = elt("b", "Sample code")
   let pre  = elt("pre", makePage)
+  let pre1 = elt("pre",increment)
+  let pre2 = elt("pre",changeOut)
   let link = elt("a", "JS Tutorial")
   let inpText = elt("input")
   inpText.type = 'number'
@@ -45,7 +47,7 @@ function makePage() {
   inpText,btn,
   elt("p","Result:"),out,
   elt("hr"),
-  elt("div", bold, pre), 
+  elt("div", bold, pre,pre1,pre2), 
   elt("div", "Ref: ", link),
   elt("hr"))
   document.body.style.maxWidth = "420px"
