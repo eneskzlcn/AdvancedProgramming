@@ -58,16 +58,17 @@
                     .then(b => display(MENU.bufferToHex(b)));
             }
             shaFromFile(f) { //File or Blob
-
-                a =  f.arrayBuffer()
-                subtle.digest('SHA-1', new TextEncoder().encode(a))
-                    .then(x=>[...new Uint8Array(x)].map(toHex).join(''))
+             
+                return subtle.digest('SHA-1', new TextEncoder().encode(f.arrayBuffer()))
+                .then(x=>[...new Uint8Array(x)].map(toHex).join(''))
 
             }
             shaFromURL(u) { //URL or string
-                 fetch(u);
-                return "implement this"
-            }
+            //use fetch(u).then ...
+            fetch(u).then(s=>
+            subtle.digest('SHA-1', new TextEncoder().encode(s.name)
+            .then(x=>[...new Uint8Array(x)].map(toHex).join(''))))
+            }e
             shaFromString(txt) {
                 if (txt.startsWith('https://')) {
                     let u = new URL(txt); display(u)
