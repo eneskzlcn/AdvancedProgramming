@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!-- saved from url=(0045)https://blm-fsmvu.github.io/305/work/CW6.html -->
+<html lang="en-US"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width">
+    <link rel="icon" href="https://blm-fsmvu.github.io/305/images/icon192.png">
+    <title>Handling Events </title>
+
+  <style> /* CSS comment */
+    body { max-width: 440px; }
+    #url { width: 190px; }
+    span, #url { color: rgb(0, 68, 255); }
+  </style>
+</head>
+
+<body>   <!-- HTML comment: Modify all items marked xxx -->
+
+
+<h2 style="color:tomato;">
+  Battery Status
+</h2>
+<h3>
+  Charge Level :<span id="level">44%</span>
+  <p id = "chargeState">Charging...</p>
+  <p id = "remainingTime">0 remaining</p>
+</h3>
+<h2 style="color:tomato">
+  Online Status
+</h2>
+<h3>
+  connected <span id ="connectionState"></span>
+</h3>
+<h2 style="color:tomato">
+  Keyboard:
+</h2>
+<h3>
+  <span id = "keyPressed"></span>
+</h3>
+<hr>
+<b>Sample code</b>
+<pre id="sample">function init() {<br>    plat.innerText = navigator.platform<br>    navigator.geolocation.getCurrentPosition(p =&gt; <br>      loc.innerText = p.coords.latitude.toFixed(4)<br>                +', '+p.coords.longitude.toFixed(4)<br>    )<br>    navigator.getBattery().then(b =&gt; <br>      level.innerText = 100*b.level+'%'<br>    )<br>    check()<br>}<br>function check() {<br>    fetch(url.value).then(r =&gt; <br>      resp.innerText = r.ok? 'OK' : 'Not found'<br>    ).catch(e =&gt; resp.innerText = e)<br>}</pre>
+
+<hr>
+
+<script>
+"use strict";
+function init() {
+    navigator.getBattery().then(b =>{
+      level.innerText = (100*b.level).toFixed(0)+'%'
+      b.onlevelchange = ()=> {
+        level.innerText = (100*b.level).toFixed(0)+'%'
+        if(b.charging)
+        {
+          let i = b.chargingTime;
+          remainingTime.innerText = i +" remaining"
+        }
+      }
+      b.onchargingchange = ()=> chargeState.innerText = 
+        (b.charging)?"Charging...":"Discharging..."
+      
+    });
+    ononline = () =>{connectionState.innerText = "--online";
+    console.log("--online");}
+    onoffline = () =>connectionState.innerText= "--offline";
+    onkeydown = (event)=> keyPressed.innerText = event.key;
+    onkeyup = (event) => keyPressed.inenrText = event.key;
+}
+
+    sample.innerText = init+'\n';
+    init();
+</script>
+
+
+
+</body></html>
