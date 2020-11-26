@@ -22,13 +22,13 @@
 <h3>
   Charge Level :<span id="level">44%</span>
   <p id = "chargeState">Charging...</p>
-  <p id = "remainingTime">0 remaining</p>
+  <p id = "time">0</p>
 </h3>
 <h2 style="color:tomato">
   Online Status
 </h2>
 <h3>
-  connected <span id ="connectionState"></span>
+   <span id ="cnn">connected online</span>
 </h3>
 <h2 style="color:tomato">
   Keyboard:
@@ -49,23 +49,21 @@ function init() {
       level.innerText = (100*b.level).toFixed(0)+'%'
       b.onlevelchange = ()=> {
         level.innerText = (100*b.level).toFixed(0)+'%'
-        if(b.charging)
-        {
-          let i = b.chargingTime;
-          remainingTime.innerText = i +" remaining"
-        }
+        let i = b.chargingTime/3600;
+        time.innerText = i.toFixed(2)+" remaining";
+        
       }
       b.onchargingchange = ()=> chargeState.innerText = 
         (b.charging)?"Charging...":"Discharging..."
       
     });
-    ononline = () =>{connectionState.innerText = "--online";
-    console.log("--online");}
-    onoffline = () =>connectionState.innerText= "--offline";
+    window.addEventListener('online',
+    (event)=>cnn.innerText= "connected online")
+    window.addEventListener('offline',
+    (event)=>cnn.innerText= "connected offline")
     onkeydown = (event)=> keyPressed.innerText = event.key;
     onkeyup = (event) => keyPressed.inenrText = event.key;
 }
-
     sample.innerText = init+'\n';
     init();
 </script>
