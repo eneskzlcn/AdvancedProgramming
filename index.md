@@ -5,6 +5,8 @@
 
 [   Homeworks](https://eneskzlcn.github.io/AdvancedProgramming/Homeworks/)
 
-**Lecture Textbook**
 
-[   Eloquent Javascript](https://eloquentjavascript.net/)
+
+    **Lecture Textbook:** 
+
+    [Eloquent Javascript](https://eloquentjavascript.net/)
