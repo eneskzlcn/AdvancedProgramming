@@ -1,9 +1,10 @@
 
-[Repository](https://github.com/eneskzlcn/AdvancedPrograming)
+[   Repository](https://github.com/eneskzlcn/AdvancedProgramming)
 
-[Classworks](https://eneskzlcn.github.io/AdvancedPrograming/Classworks/)
+[   Classworks](https://eneskzlcn.github.io/AdvancedProgramming/Classworks/)
 
-[Homeworks](https://eneskzlcn.github.io/AdvancedPrograming/Homeworks/)
+[   Homeworks](https://eneskzlcn.github.io/AdvancedProgramming/Homeworks/)
 
-# Textbook Of Lecture
-[ -Eloquent Javascript](https://eloquentjavascript.net/)
+Lecture Textbook
+
+[   Eloquent Javascript](https://eloquentjavascript.net/)
