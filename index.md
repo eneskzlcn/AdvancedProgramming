@@ -7,6 +7,5 @@
 
 
 
-    **Lecture Textbook:** 
 
-    [Eloquent Javascript](https://eloquentjavascript.net/)
+**Lecture Textbook:** [Eloquent Javascript](https://eloquentjavascript.net/)
