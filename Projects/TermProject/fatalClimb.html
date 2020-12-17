@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Fatal Climb</title>
+    <!-- Add icon library -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    	* { padding: 0; margin: 0; }
+    	canvas { background: rgb(129, 74, 74); display: block; margin: 50 auto;}
+      div {background: rgb(82, 119, 84);display: block;border-color: black;
+        border-width: 10px;border-style: solid;}
+      button{
+        background-color: rgb(89, 94, 91);margin-top: 60px;margin-left:140px;   }
+      h1{margin-left: 60px;margin-top: 10px;}
+      h2{margin-left: 5%;margin-top: 30px;}
+      p{margin-left: 5%;margin-top: 50px;}
+    </style>
+</head>
+<body>
+<script>
+    "use strict"
+    //initializing canvas
+    
+	  var canvas = 0;
+    var ctx = 0;
+    //--------------------------------
+    //defining game objects and global variables
+    var char = {pos:{x:0,y:0},width:0,height:0,gravity_magnitude:0,speed:{x:0,y:0},
+    jumpMagnitude:0,img: new Image(),onGround:false}
+    var apartment_left = {pos:{x:0,y:0},width:0,height:0,speed:{x:0,y:0},img:new Image()}
+    var apartment_right = {pos:{x:0,y:0},width:0,height:0,speed:{x:0,y:0},img:new Image()};
+    let platform_img = new Image();
+    const url = "https://eneskzlcn.github.io/Fatal-Climb"
+    platform_img.src = url+"/images/platform.png";
+    var platforms = []
+    const platforms_spawn_point_y =-440;
+    const padding_btw_platforms = 100;
+    const char_gravity_magnitude= 3;
+    const platform_gravity_magnitude = 1.5;
+    const platform_width = 80;
+    const platform_height = 30;
+    const platform_count = 50;
+    let is_game_over = false;
+    var gameIntervalID = 0
+    var level = 1;
+    var score = {value:0,pos:{x:0,y:0},isBroken:false}
+    //-------------------------------
+    //Adding listener funct. if exists
+    document.addEventListener("keydown", keyDownHandler,false);  
+    document.addEventListener("keyup",keyUpHandler,false);
+
+    //initializing all the game before start...
+    var init_game = ()=>
+    {
+      is_game_over = false;
+      platforms = []
+      canvas = document.createElement("canvas");
+      canvas.width = 400
+      canvas.height = 400
+      document.body.appendChild(canvas);
+      ctx = canvas.getContext("2d");
+      ctx.font = "20px Arial";
+      init_Apartments()//sağa doğru x artıyor.yukarı doğru y azalıyor.
+      init_Character();
+      init_Platforms();
+      init_UIElements();
+    }
+
+    //initializing apartments
+    var init_Apartments =()=>
+    {// apartments are constants. their position will never change... width,height == img.width,img.height
+      apartment_left.width=50,apartment_left.height = canvas.height,apartment_left.img.src=url+"/images/wall.png";
+      apartment_right.width=50,apartment_right.height = canvas.height,apartment_right.img.src=url+"/images/wall.png",
+      apartment_right.pos.x = canvas.width-50;
+    }
+
+    //initalizing character
+    var init_Character = ()=>
+    {
+      char.pos.x = canvas.width/2+40,char.pos.y=canvas.height/2-100,char.width = 80,char.height=58,
+      char.gravity_magnitude=char_gravity_magnitude, char.speed.x = 70,char.jumpMagnitude=70,char.img.src=url+"/images/idle.png",
+      char.onGround = false
+    }
+    //initializing platforms
+    var init_Platforms = (platforms_y = 360)=>
+    {
+      var left_side_platform_x = apartment_left.width;
+      var right_side_platform_x = canvas.width-apartment_right.width-platform_width
+
+      for(let i = 0; i < platform_count;i++)
+      {
+        if(i == platform_count-1)
+        {
+          let middle_platform_x = (canvas.width/2-platform_width/2)
+          platforms[i]= {pos:{x:middle_platform_x,y:platforms_y},width:platform_width,index:i,
+            height:platform_height,gravity_magnitude:platform_gravity_magnitude,toConnected:"mid",img:platform_img}
+          break;
+        }
+        if(i%2 == 0)
+        {
+          platforms[i]= {pos:{x:left_side_platform_x,y:platforms_y},width:platform_width,index:i,
+            height:platform_height,gravity_magnitude:platform_gravity_magnitude,toConnected:"left",img:platform_img}
+        }
+        else
+        {
+          platforms[i]= {pos:{x:right_side_platform_x,y:platforms_y},width:platform_width,index:i,
+            height:platform_height,gravity_magnitude:platform_gravity_magnitude,toConnected:"right",img:platform_img}
+        }
+        platforms_y -= padding_btw_platforms;
+      }
+    }
+    //initialize uı elements
+    var init_UIElements = ()=>
+    {
+      score.value = 0
+      score.isBroken = false
+      score.pos.x = canvas.width/2-10
+      score.pos.y = 20
+    }
+    //making start,end game menus
+    //make start menu
+    var makeStartMenu = ()=>
+    {
+      //start panel
+      let panel = document.createElement("div")
+      panel.style.width = "400px"
+      panel.style.height = "400px"
+      document.body.appendChild(panel);
+      //game name
+      let gameName = document.createElement("h1")
+      gameName.style.fontSize = "40px"
+      gameName.innerText = "FATAL CLIMB"
+      panel.appendChild(gameName);
+      //highscore Text
+      let highscoreText = document.createElement("h2")
+      highscoreText.innerText = "Your highscore: "+ JSON.parse(localStorage.getItem('highscore'))
+      panel.appendChild(highscoreText)
+      //game controlls description
+      let descriptionText= document.createElement("p")
+      descriptionText.innerText = "Press 'Arrow Up' to jump\n"+"Press 'Arrow Right' to move right \n"
+        +"Press 'Arrow Left' to move left"
+      panel.appendChild(descriptionText)
+      //start button
+      let startButton = document.createElement("button")
+      let buttonIcon = document.createElement("i")
+      buttonIcon.className = "fa fa-play"
+      startButton.appendChild(buttonIcon)
+      startButton.style.fontSize = "40px"
+      startButton.style.width = "100px"
+      startButton.style.color = "black"
+      startButton.className = "button"
+      panel.appendChild(startButton)
+      startButton.addEventListener("click",()=>
+      {
+        document.body.removeChild(panel)
+        level = 1;
+        init_game()
+        gameIntervalID = setInterval(game,20)
+      })
+      
+    }
+    //making game over menu
+    var makeGameOverMenu = ()=>
+    {
+      //game over panel
+      let panel = document.createElement("div")
+      panel.style.width = "400px"
+      panel.style.height = "400px"
+      document.body.appendChild(panel);
+      //game over text
+      let gameOver = document.createElement("h1")
+      gameOver.style.fontSize = "40px"
+      gameOver.innerText = "GAME OVER"
+      gameOver.style.textAlign=
+      panel.appendChild(gameOver);
+      //you got highscore
+      if(score.isBroken)
+      {
+        let gotHighScore = document.createElement("h2")
+        gotHighScore.style.fonstSize = "30px"
+        gotHighScore.innerText = 'You got highscore!'
+        panel.appendChild(gotHighScore);
+      }
+      //Highscore text
+      let highscoreText = document.createElement("h2")
+      let highscore = JSON.parse(localStorage.getItem('highscore'))
+      highscoreText.style.fontSize = "30px";
+      highscoreText.innerText = 'Your highscore: '+ highscore
+      panel.appendChild(highscoreText);
+      //Score text
+      let scoreText = document.createElement("h2")
+      scoreText.style.fontSize = "30px"
+      scoreText.innerText = 'Your Score: '+ score.value
+      panel.appendChild(scoreText);
+      //restart button
+      let restartButton = document.createElement("button")
+      let buttonIcon = document.createElement("i")
+      buttonIcon.className = "fa fa-play"
+      restartButton.appendChild(buttonIcon)
+      restartButton.style.fontSize = "40px"
+      restartButton.style.width = "100px"
+      restartButton.style.color = "black"
+      restartButton.style.marginTop = "50px"
+      restartButton.className = "button"
+      panel.appendChild(restartButton)
+      restartButton.addEventListener("click",()=>
+      {
+        document.body.removeChild(panel)
+        init_game()
+        gameIntervalID = setInterval(game,20)
+        level = 1;
+      })
+    }
+    //draw the character to the canvas
+    var drawCharacter = ()=>
+    {
+        ctx.beginPath();
+        ctx.drawImage(char.img,char.pos.x,char.pos.y);
+        ctx.closePath();
+    }
+    //draw apartments to the canvas
+    var drawApartments =()=>
+    {
+        ctx.beginPath();
+        ctx.drawImage(apartment_left.img,apartment_left.pos.x,apartment_left.pos.y);
+        ctx.drawImage(apartment_right.img,apartment_right.pos.x,apartment_right.pos.y);
+        ctx.closePath();
+    }
+    //draw platforms to the canvas
+    var drawPlatforms = ()=>
+    {
+      for(let platform of platforms)
+      {
+        ctx.beginPath();
+        ctx.drawImage(platform.img,platform.pos.x,platform.pos.y);
+        if(platform.index %10 == 0 && platform.toConnected == "left")
+        {
+          ctx.fillStyle = "#000000";
+          ctx.fillText(platform.index.toString(),
+            platform.pos.x+5+platform.width, platform.pos.y+platform.height/2+5);
+        }
+        ctx.closePath();
+      }
+    }
+    //draw score text to the canvas
+    var drawUIElements =()=>
+    {
+      //score text
+      ctx.beginPath();
+      ctx.fillStyle = "#fff";
+      ctx.fillText(score.value.toString(), score.pos.x,score.pos.y);
+      ctx.closePath();  
+    }
+   
+    var game =()=>
+    {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawCharacter();
+        drawApartments();
+        drawPlatforms();
+        drawUIElements();
+        onCollision();
+        handleGravity();
+        gameOverHandler();
+        if(level == 10)
+        {
+          handlePlatformMovement();
+        }
+
+    }
+    function keyDownHandler(e)
+    {
+        if(e.key == "ArrowUp")
+        {
+          handleJump();
+        }
+        if(e.key == "ArrowRight")
+        {
+          setIntervalX(()=>char.pos.x += char.speed.x/10,20,10)
+        }
+        else if(e.key == "ArrowLeft")
+        {
+          setIntervalX(()=>char.pos.x -= char.speed.x/10,20,10)
+        }
+    }
+    function keyUpHandler(e)
+    {
+      if(e.key == "ArrowUp")
+      {
+        char.onGround= false;
+      }
+    }
+    //this func. is taken from stackoverflow.com as the answer of the question(answered by Daniel Vassallo)
+    // 'Javascript - telling setInterval to only fire x amount of times?''
+    // This funct. used in movement to the left,right and also jump. Before not using this func. and
+    // say jump to character about 10 units, it was seen like it is teleporting to that point. It wasn't good.
+    // Now this function provides to do that if jump then start the move 1 by 1 to the 10 units with a paramater delay
+    //and this is seen like the character is really moving or jumping.
+    var setIntervalX = (callback, delay, repetitions)=>
+    {
+      var x = 0;
+      var intervalID = window.setInterval(function () {
+
+        callback();
+
+        if (++x === repetitions) {
+            window.clearInterval(intervalID);
+        }
+      }, delay);
+    }
+    
+    var onCollision =() =>//control character is colliding with any apartment or any platform...
+    {
+      if (char.pos.y > canvas.width)
+      {
+        is_game_over = true;//character is already falled down
+      }
+      if(char.pos.x <= apartment_left.pos.x + apartment_left.width)//character is colliding with left apartment
+      {
+        char.pos.x = apartment_left.pos.x + apartment_left.width
+      }
+      else if(char.pos.x+char.width >= apartment_right.pos.x)//character is colliding with left apartment
+      {
+        char.pos.x = apartment_right.pos.x - char.width//character is colliding with right apartments
+      }
+      for(let plat of platforms)
+      {
+          console.log(plat.toConnected)
+           handlePlatformCollision(plat);
+         
+      }
+    }
+    var gameOverHandler = ()=>
+    {
+      if(is_game_over)
+      {
+        let savedHighScore = Number(JSON.parse(localStorage.getItem('highscore')))
+        if(score.value > savedHighScore)
+        {
+          score.isBroken = true;
+          localStorage.setItem('highscore',JSON.stringify(score.value));
+        }
+        clearInterval(gameIntervalID);
+        document.body.removeChild(canvas);
+        makeGameOverMenu();
+      }
+    }
+    var handleJump =()=>
+    {
+      if(char.onGround)
+      {
+        char.onGround = false;
+        char.img.src = url+"/images/jump_0.png"
+        setIntervalX(()=>char.pos.y -= char.jumpMagnitude/5,20,10)
+      }
+      
+    }
+    var handleGravity =()=>
+    {
+      for(let plt of platforms) //platforms are effected of gravity
+      {
+        plt.pos.y += plt.gravity_magnitude;
+      }
+      char.pos.y += char.gravity_magnitude //character is effected of gravity
+    }
+    var handlePlatformMovement = ()=>
+    {
+        let platform_movement_velocity = 1
+      
+        for(let platform of platforms)
+        {
+          if(platform.toConnected == "right")
+          {
+            platform.pos.x-=platform_movement_velocity;
+          }
+          else if(platform.toConnected == "left")
+          {
+            platform.pos.x+=platform_movement_velocity;
+          }
+          if(platform.pos.x+platform.width+platform_movement_velocity >= apartment_right.pos.x)
+          {
+            platform.toConnected = "right"
+          }
+          else if(platform.pos.x-platform.platform_movement_velocity <= apartment_left.pos.x +apartment_left.width)
+          {
+            platform.toConnected = "left"
+          }
+        //if(platform.toConnected == "right" && 
+        //  (platform.pos.x -platform_movement_velocity <= apartment_left.pos.x+apartment_left.width))
+        //{
+        //  platform.toConnected = "left"
+        //}
+        //if(platform.toConnected == "left" &&
+        //  (platform.pos.x+platform.width+platform_movement_velocity>= apartment_right.pos.x))
+        //  {
+        //    platform.toConnected = "right"
+        //  }
+        }
+      
+    }
+
+    //this functions seems to control every thing on collision because of its name. But it only controls if
+    //the character is on collision with a platform. Only character is needed to be controlled if is colliding with a platform.
+    var handlePlatformCollision = (platform)=>
+    {
+      //this control statements enough the control is it colliding.
+      //control if character is colliding from bottom side (if its head is more closer to platform_y)
+      //or top side ( foots of the character on ground).If character hits its head from bot side 
+      //to the platform the game will over. If only falling down to the platform,it is the things need
+      // to be done.
+      let isCollising = false;
+      if(platform.toConnected = "left")
+      {
+        if(char.pos.x > platform.pos.x-3 && char.pos.x < platform.pos.x+platform.width+3 &&
+          char.pos.y+char.height > platform.pos.y-1 && char.pos.y+char.height< platform.pos.y + platform.height-5)
+        { 
+          isCollising=true;
+        }
+      }
+      else if(platform.toConnected = "right")
+      {
+        if(char.pos.x+char.width > platform.pos.x && char.pos.x +char.width< platform.pos.x+platform.width &&
+          char.pos.y+char.height > platform.pos.y-1 && char.pos.y+char.height< platform.pos.y + platform.height-5)
+        { 
+          isCollising = true;
+        }
+      }
+      if(isCollising)
+      {  
+        score.value =(Number(score.value) + Math.random()*10).toFixed(0)
+        char.img.src=url+"/images/idle.png"
+        if(platform.index == platform_count-1)
+        {//devam ediverrr
+          if(level == 1)
+          {
+            setIntervalX(()=>
+            {
+              ctx.beginPath();
+              ctx.fillStyle = "#fff";
+              ctx.fillText("STEP 2", canvas.width/2-20,canvas.height/2-20);
+              ctx.closePath();
+            },10,150)
+            setTimeout(()=>
+            {
+              setIntervalX(()=>char.pos.y -= char.jumpMagnitude/5,20,35)
+              
+            },1000)
+            setTimeout(()=>
+            {
+              init_Platforms();
+              //setInterval(()=>{
+              //  handlePlatformMovement()
+              //},20)
+       
+            },3000)
+          }
+          level = 2;
+        }
+        if(char.pos.y<platform.pos.y)//falling from top
+        {
+          char.onGround = true;
+          char.pos.y = platform.pos.y-char.height+5;
+          //platform.gravity_magnitude = char.gravity_magnitude; // keep moving with platform until jump
+          return;
+        }
+        else if(char.pos.y > platform.pos.y)
+        {
+          is_game_over = true; // hitting head from bottom
+          return;
+        }
+      }
+    }
+    var initLocalStorage = ()=>
+    {
+        if(origin.startsWith('http') && localStorage)
+        {
+            if(!localStorage.highscore) 
+            {
+                localStorage.setItem('highscore',JSON.stringify(0))
+            }
+        }
+    }
+    
+    initLocalStorage();
+    makeStartMenu();
+
+</script>
+
+</body>
+</html>
