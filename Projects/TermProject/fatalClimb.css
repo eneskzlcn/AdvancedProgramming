@@ -2,7 +2,10 @@
 canvas { 
     background-image:url("images/spring.png");
     display: block; 
-    margin: 50 auto;}
+    margin: 50 auto;
+    touch-action: manipulation;
+}
+    
 div {
     background-image: url("images/fatalClimb.gif");
     display: block;
