@@ -82,6 +82,7 @@ class Course { //implement this
         return new Course(...s.split('\t'))
     }
 }
+let newStudent = Course.fromString("1232 enes kzlcn")
 
 function report(msg, id, list) {
     msg += " "; let txt = "<br>\n"+msg;
@@ -108,6 +109,14 @@ function doClick(evt) {
     let s = evt.target.innerText;
     //if s contains only digits
     if (/^\d+$/.test(s)) showStudent(s); 
+}
+let a = {
+    pos:{x:20,y:20},
+    scale:{x:1,y:1},
+    rotation:{x:1,y:1},
+    name:"player",
+    rigidBody:false,
+    collider:"BoxCollider",
 }
 function showStudent(id) {
     let std = stdMap.get(id);

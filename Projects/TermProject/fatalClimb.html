@@ -12,7 +12,6 @@
     	canvas { background-image:url("images/spring.png"); display: block; margin: 50 auto;}
       div {background-image: url("images/menu_background.png");display: block;border-color: black;
         border-width: 10px;border-style: solid;}
-        "https://eneskzlcn.github.io/AdvancedProgramming/Projects/TermProject/images/menu_background.png"
       .button{
         border: 5px;
         border-color: black;
@@ -26,10 +25,6 @@
         cursor: pointer;
         background-color: rgb(89, 94, 91);
         margin-top: 0px;margin-left:140px;   }
-      .mscBtn
-      {
-
-      }
       h1{margin-left: 60px;margin-top: 10px;}
       h2{margin-left: 5%;margin-top: 30px;}
       p{margin-left: 5%;margin-top: 50px;}
@@ -43,6 +38,7 @@
 	  var canvas = 0;
     var ctx = 0;
     //--------------------------------
+    //"https://eneskzlcn.github.io/AdvancedProgramming/Projects/TermProject/images/menu_background.png"
     //defining game objects and global variables
     var char = {pos:{x:0,y:0},width:0,height:0,gravity_magnitude:0,speed:{x:0,y:0},
     jumpMagnitude:0,img:0,onGround:false}
@@ -54,6 +50,7 @@
     let spring_platform;
     var chosen_platform;
     let char_img;
+    let char_jump_img;
     let apartment_img;
     const url = "https://eneskzlcn.github.io/Fatal-Climb"
     var platforms = []
@@ -108,25 +105,27 @@
     }
     var init_sounds = ()=>
     {
-      background_sound = new sound("/sounds/background_sound.mp3")
-      jump_sound = new sound("/sounds/jump_sound.ogg")
-      death_sound = new sound("/sounds/death_sound.wav")
-      win_sound = new sound("/sounds/win_sound.wav")
+      background_sound = new sound("sounds/background_sound.mp3")
+      jump_sound = new sound("sounds/jump_sound.ogg")
+      death_sound = new sound("sounds/death_sound.wav")
+      win_sound = new sound("sounds/win_sound.wav")
     }
     var init_images = ()=>
     {
       char_img = new Image();
-      char_img.src = url+"/images/idle.png";
+      char_jump_img = new Image();
       apartment_img = new Image();
-      apartment_img.src = url+"/images/apartment.png";
       autumn_platform = new Image();
       winter_platform = new Image();
       sunny_platform  = new Image();
       spring_platform = new Image();
-      autumn_platform.src = url+"/images/autumn_platform.png"
-      winter_platform.src = url+"/images/winter_platform.png"
-      sunny_platform .src = url+"/images/sunny_platform.png"
-      spring_platform.src = url+"/images/spring_platform.png"
+      char_img.src = "images/char_idle.png";
+      char_jump_img.src = "images/char_jump.png";
+      apartment_img.src = "images/apartment.png";
+      autumn_platform.src = "images/autumn_platform.png"
+      winter_platform.src = "images/winter_platform.png"
+      sunny_platform .src = "images/sunny_platform.png"
+      spring_platform.src = "images/spring_platform.png"
     }
     //initializing apartments
     var init_apartments =()=>
@@ -491,7 +490,7 @@
       if(isCollising)
       {
         score.value =(Number(score.value) + Math.random()*10).toFixed(0)
-        char.img.src=url+"/images/char_idle.png"
+        char.img = char_img;
         if((platform.index == platform_count-1))
         {//devam ediverrr
           if(level == 1 && (platform.is_controlled == false))
@@ -567,17 +566,17 @@
             },200)
             if(passing_level == 2)
             {
-              canvas.style.backgroundImage = "url("+url+'images/winter.png'+")"
+              canvas.style.backgroundImage = "url('images/winter.png')"
               chosen_platform = winter_platform;
             }
             else if(passing_level == 3)
             {
-              canvas.style.backgroundImage = "url("+url+'images/autumn.png'+")"
+              canvas.style.backgroundImage = "url('images/autumn.png')"
               chosen_platform = autumn_platform
             }
             else if(passing_level == 4)
             {
-              canvas.style.backgroundImage = "url("+url+'images/sunny.png'+")"
+              canvas.style.backgroundImage = "url('images/sunny.png'"
               chosen_platform = sunny_platform
             }
             setTimeout(init_platforms,2000)
@@ -589,7 +588,7 @@
       {
         char.onGround = false;
         jump_sound.play()
-        char.img.src = url+"/images/char_jump.png"
+        char.img = char_jump_img;
         setIntervalX(()=>char.pos.y -= char.jumpMagnitude/5,20,10)
       }
 
