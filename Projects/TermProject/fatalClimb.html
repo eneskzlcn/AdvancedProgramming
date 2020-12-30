@@ -7,27 +7,9 @@
     <title>Fatal Climb</title>
     <!-- Add icon library -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel = "stylesheet" href="fatalClimb.css">
     <style>
-    	* { padding: 0; margin: 0; }
-    	canvas { background-image:url("images/spring.png"); display: block; margin: 50 auto;}
-      div {background-image: url("images/fatalClimb.gif");display: block;border-color: black;
-        border-width: 10px;border-style: solid;}
-      .button{
-        border: 5px;
-        border-color: black;
-        color: white;
-        padding: 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        border-radius: 50%;
-        margin: 4px 2px;
-        cursor: pointer;
-        background-color: rgb(89, 94, 91);
-        margin-top: 0px;margin-left:140px;   }
-      h1{margin-left: 60px;margin-top: 10px;}
-      h2{margin-left: 5%;margin-top: 30px;}
-      p{margin-left: 5%;margin-top: 50px;}
+    
     </style>
 </head>
 <body>
@@ -35,10 +17,9 @@
     "use strict"
     //initializing canvas
 
-	  var canvas = 0;
-    var ctx = 0;
+	  var canvas ;
+    var ctx;
     //--------------------------------
-    //"https://eneskzlcn.github.io/AdvancedProgramming/Projects/TermProject/images/menu_background.png"
     //defining game objects and global variables
     var char = {pos:{x:0,y:0},width:0,height:0,gravity_magnitude:0,speed:{x:0,y:0},
     jumpMagnitude:0,img:0,onGround:false}
@@ -52,15 +33,14 @@
     let char_img;
     let char_jump_img;
     let apartment_img;
-    const url = "https://eneskzlcn.github.io/Fatal-Climb"
-    var platforms = []
+    var platforms;
     const platforms_spawn_point_y =-440;
     const padding_btw_platforms = 100;
     var char_gravity_magnitude= 3;
     var platform_gravity_magnitude = 1.5;
     const platform_width = 80;
     const platform_height = 30;
-    const platform_count = 8;
+    const platform_count = 12;
     const platform_gravity_increase_amount =0.1;
     const char_gravity_increase_amount = 0.1;
     var background_sound;
@@ -70,7 +50,7 @@
     let is_game_over = false;
     let is_game_finished = false;
     var gameIntervalID = 0
-    var volume = 0.1
+    var volume = 0.05
     var level = 1;
     var score = {value:0,pos:{x:0,y:0},isBroken:false}
     //-------------------------------
@@ -121,7 +101,7 @@
       spring_platform = new Image();
       char_img.src = "images/char_idle.png";
       char_jump_img.src = "images/char_jump.png";
-      apartment_img.src = "images/apartment.png";
+      apartment_img.src = "images/wall.png";
       autumn_platform.src = "images/autumn_platform.png"
       winter_platform.src = "images/winter_platform.png"
       sunny_platform .src = "images/sunny_platform.png"
@@ -188,36 +168,43 @@
       document.body.appendChild(panel);
       //game name
       let gameName = document.createElement("h1")
+      gameName.className = "title"
       gameName.style.fontSize = "40px"
       gameName.innerText = "FATAL CLIMB"
+      
       panel.appendChild(gameName);
       //highscore Text
       let highscoreText = document.createElement("h2")
+      highscoreText.className = "subtitle"
       highscoreText.innerText = "Your highscore: "+ JSON.parse(localStorage.getItem('highscore'))
       panel.appendChild(highscoreText)
       //game controlls description
+      let howToControlText = document.createElement("p")
+      howToControlText.innerText = "How To Control ?"
+      howToControlText.className = "desc"
       let descriptionText= document.createElement("p")
-      descriptionText.innerText = "Press 'Arrow Up' or tap higher than character to jump\n"+"Press 'Arrow Right'or tap right part of screen to move right \n"
+      descriptionText.innerText = "Press 'Arrow Up' or tap higher than character to jump\n\n"+"Press 'Arrow Right'or tap right part of screen to move right \n\n"
         +"Press 'Arrow Left' or tap left part of the screen to move left"
-      panel.appendChild(descriptionText)
+      let desc = document.createElement("span")
+      desc.className = "innerDesc"
+      desc.appendChild(descriptionText)
+      howToControlText.appendChild(desc)
+      panel.appendChild(howToControlText)
       //start button
-      let startButton = document.createElement("button")
-      let buttonIcon = document.createElement("i")
-      buttonIcon.className = "fa fa-play"
-      startButton.appendChild(buttonIcon)
-      startButton.style.fontSize = "40px"
-      startButton.style.width = "100px"
-      startButton.style.color = "black"
-      startButton.className = "button"
+      let startButton = document.createElement("a")
+      startButton.href = "#"
+      startButton.className="play-btn"
       panel.appendChild(startButton)
-      let musicButton = document.createElement("button")
+      let musicButton = document.createElement("a")
       let musicIcon = document.createElement("i")
       musicIcon.className = "fa fa-volume-up"
       musicButton.appendChild(musicIcon)
-      musicButton.style.fontSize = "40px"
-      musicButton.style.width = "100px"
-      musicButton.style.color = "black"
-      musicButton.className = "button"
+      musicButton.style.fontSize = "20px"
+      musicButton.style.color = "white"
+      musicIcon.style.position = "relative"
+      musicIcon.style.margin = "11px"
+      musicButton.className = "music-btn"
+      
       panel.appendChild(musicButton)
       musicButton.addEventListener("click",()=>
       {
@@ -251,14 +238,15 @@
       panel.style.height = "400px"
       document.body.appendChild(panel);
       //game over text
-      let gameOver = document.createElement("h1")
-      gameOver.style.fontSize = "40px"
-      gameOver.innerText = menuText
-      panel.appendChild(gameOver);
+      let game_state = document.createElement("h1")
+      game_state.className = "title"
+      game_state.innerText = menuText
+      panel.appendChild(game_state);
       //you got highscore
       if(score.isBroken)
       {
         let gotHighScore = document.createElement("h2")
+        gotHighScore.className = "subtitle"
         gotHighScore.style.fonstSize = "30px"
         gotHighScore.innerText = 'You got highscore!'
         panel.appendChild(gotHighScore);
@@ -266,25 +254,30 @@
       //Highscore text
       let highscoreText = document.createElement("h2")
       let highscore = JSON.parse(localStorage.getItem('highscore'))
+      highscoreText.className ="subtitle"
       highscoreText.style.fontSize = "30px";
       highscoreText.innerText = 'Your highscore: '+ highscore
       panel.appendChild(highscoreText);
       //Score text
       let scoreText = document.createElement("h2")
+      scoreText.className = "subtitle"
       scoreText.style.fontSize = "30px"
       scoreText.innerText = 'Your Score: '+ score.value
       panel.appendChild(scoreText);
       //restart button
-      let restartButton = document.createElement("button")
-      let buttonIcon = document.createElement("i")
-      buttonIcon.className = "fa fa-play"
-      restartButton.appendChild(buttonIcon)
+      let restartButton = document.createElement("a")
+      let restartIcon = document.createElement("i")
+      restartIcon.className = "fa fa-repeat"
+      restartButton.appendChild(restartIcon)
+      restartIcon.style.position = "relative"
+      restartIcon.style.margin = "18px"
+      restartButton.className = "music-btn"
       restartButton.style.fontSize = "40px"
-      restartButton.style.width = "100px"
-      restartButton.style.color = "black"
-      restartButton.style.marginTop = "50px"
-      restartButton.className = "button"
+      restartButton.style.color = "white"
+      restartButton.style.width = "75px"
+      restartButton.style.height="75px"
       panel.appendChild(restartButton)
+
       restartButton.addEventListener("click",()=>
       {
         document.body.removeChild(panel)
@@ -566,18 +559,29 @@
             },200)
             if(passing_level == 2)
             {
-              canvas.style.backgroundImage = "url('images/winter.png')"
-              chosen_platform = winter_platform;
+              setTimeout(()=>
+              {
+                canvas.style.backgroundImage = "url('images/winter.png')"
+                chosen_platform = winter_platform;
+              },2000)
+              
             }
             else if(passing_level == 3)
             {
-              canvas.style.backgroundImage = "url('images/autumn.png')"
-              chosen_platform = autumn_platform
+              setTimeout(()=>
+              {
+                canvas.style.backgroundImage = "url('images/autumn.png')"
+                chosen_platform = autumn_platform
+              },2000)
+              
             }
             else if(passing_level == 4)
             {
-              canvas.style.backgroundImage = "url('images/sunny.png'"
-              chosen_platform = sunny_platform
+              setTimeout(()=>
+              {
+                canvas.style.backgroundImage = "url('images/sunny.png'"
+                chosen_platform = sunny_platform
+              },2000)
             }
             setTimeout(init_platforms,2000)
 
