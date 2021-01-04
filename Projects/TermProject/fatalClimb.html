@@ -354,7 +354,7 @@
         onCollision();
         handleGravity();
         gameOverHandler();
-        if(level == 2)
+        if(level == 2 || level ==4)
         {
           handlePlatformMovement();
         }
@@ -547,11 +547,12 @@
         setIntervalX(()=>
             {
               ctx.beginPath();
-              ctx.fillStyle = "#fff";
+              ctx.fillStyle = "#000";
+              ctx.font = "30px"
               ctx.fillText("STEP "+passing_level, canvas.width/2-40,canvas.height/2-60);
 
               ctx.closePath();
-            },10,150)
+            },20,150)
             setTimeout(()=>
             {
               setIntervalX(()=>char.pos.y -= char.jumpMagnitude/5,20,35)
